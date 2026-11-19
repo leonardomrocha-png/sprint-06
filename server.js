@@ -1,20 +1,16 @@
-// — [SPRINT 01 — BASE: Express e ES Modules — mantido da primeira aula] —
+// ── [SPRINT 01 — BASE: Express e ES Modules — mantido da primeira aula] ──
 import express from "express";
 
-// — [SPRINT 04 — HERDADO] —
+// ── [SPRINT 04 — HERDADO] ──
 // Módulo que lê e grava as mensagens em arquivo JSON.
 import { lerMensagens, salvarMensagens } from "./store.js";
 
 const app = express();
 const PORT = 3000;
 
-// - [SPRINT 05 - NOVO: recebimento de dados por POST] -
+// ── [SPRINT 05 — HERDADO: API DE ENVIO] ──
 // Recebe JSON do navegador ou de um cliente HTTP.
 app.use(express.json());
-
-// — [SPRINT 06 – NOVO: interface web e arquivos estáticos] —
-// A rota GET / agora entrega public/index.html em vez da mensagem fixa.
-app.use(express.static("public"));
 
 // Serializa gravações dentro deste único processo Node.js.
 let fila = Promise.resolve();
@@ -41,11 +37,19 @@ app.post("/mensagens", (req, res) => {
   });
 });
 
-// — [SPRINT 01 — ROTAS HERDADAS: /status, /sobre] —
+
+// ── [SPRINT 06 — NOVO: interface web e arquivos estáticos] ──
+// A rota GET / agora entrega public/index.html em vez da mensagem fixa.
+app.use(express.static("public"));
+
+
+// ── [SPRINT 01 — ROTAS HERDADAS: /status, /sobre; / agora é HTML] ──
+// Rotas da Sprint 01 — continuam disponíveis.
 app.get("/status", (req, res) => res.json({ status: "online", sprint: 6 }));
 app.get("/sobre", (req, res) => res.send("Mensageiro Local com Node.js, Express e ES Modules."));
 
-// — [SPRINT 04 — ROTAS HERDADAS] —
+
+// ── [SPRINT 04 — ROTAS HERDADAS] ──
 app.get("/mensagens", async (req, res) => {
   try { res.json(await lerMensagens()); }
   catch (erro) {
@@ -53,7 +57,6 @@ app.get("/mensagens", async (req, res) => {
     res.status(500).json({ erro: "Não foi possível ler as mensagens." });
   }
 });
-
 app.get("/mensagens/:id", async (req, res) => {
   try {
     const lista = await lerMensagens();
@@ -65,13 +68,13 @@ app.get("/mensagens/:id", async (req, res) => {
     res.status(500).json({ erro: "Falha ao consultar mensagem." });
   }
 });
-
 app.get("/total-mensagens", async (req, res) => {
   try { res.json({ total: (await lerMensagens()).length }); }
   catch (erro) { res.status(500).json({ erro: "Falha na contagem." }); }
 });
 
-// — [SPRINT 01 — SERVIDOR: iniciado na porta 3000; mantido ao longo das aulas] —
-app.listen(PORT, "0.0.0.0", () => {
+
+// ── [SPRINT 01 — SERVIDOR: iniciado na porta 3000; mantido ao longo das aulas] ──
+app.listen(PORT, () => {
   console.log(`Servidor em http://localhost:${PORT}`);
 });

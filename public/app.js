@@ -41,7 +41,6 @@ formulario.addEventListener('submit', async evento => {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ usuario: nome.value, texto: texto.value })
     });
-    
     const dados = await resposta.json();
     if (!resposta.ok) throw new Error(dados.erro ?? 'Falha ao enviar.');
     texto.value = '';
@@ -52,3 +51,4 @@ formulario.addEventListener('submit', async evento => {
 });
 await atualizarMensagens();
 setInterval(atualizarMensagens, 3000);
+// fim
