@@ -8,10 +8,13 @@ import { lerMensagens, salvarMensagens } from "./store.js";
 const app = express();
 const PORT = 3000;
 
-
 // - [SPRINT 05 - NOVO: recebimento de dados por POST] -
 // Recebe JSON do navegador ou de um cliente HTTP.
 app.use(express.json());
+
+// — [SPRINT 06 – NOVO: interface web e arquivos estáticos] —
+// A rota GET / agora entrega public/index.html em vez da mensagem fixa.
+app.use(express.static("public"));
 
 // Serializa gravações dentro deste único processo Node.js.
 let fila = Promise.resolve();
@@ -38,10 +41,8 @@ app.post("/mensagens", (req, res) => {
   });
 });
 
-// — [SPRINT 01 — ROTAS HERDADAS: /, /status, /sobre] —
-// Rotas da Sprint 01 - continuam disponíveis.
-app.get("/", (req, res) => res.send("Servidor rodando! 🚀"));
-app.get("/status", (req, res) => res.json({ status: "online", sprint: 5 }));
+// — [SPRINT 01 — ROTAS HERDADAS: /status, /sobre] —
+app.get("/status", (req, res) => res.json({ status: "online", sprint: 6 }));
 app.get("/sobre", (req, res) => res.send("Mensageiro Local com Node.js, Express e ES Modules."));
 
 // — [SPRINT 04 — ROTAS HERDADAS] —
@@ -52,6 +53,7 @@ app.get("/mensagens", async (req, res) => {
     res.status(500).json({ erro: "Não foi possível ler as mensagens." });
   }
 });
+
 app.get("/mensagens/:id", async (req, res) => {
   try {
     const lista = await lerMensagens();
@@ -62,30 +64,8 @@ app.get("/mensagens/:id", async (req, res) => {
     console.error(erro);
     res.status(500).json({ erro: "Falha ao consultar mensagem." });
   }
-});
-app.get("/total-mensagens", async (req, res) => {
-  try { res.json({ total: (await lerMensagens()).length }); }
-  catch (erro) { res.status(500).json({ erro: "Falha na contagem." }); }
 });
 
-app.get("/mensagens", async (req, res) => {
-  try { res.json(await lerMensagens()); }
-  catch (erro) {
-    console.error(erro);
-    res.status(500).json({ erro: "Não foi possível ler as mensagens." });
-  }
-});
-app.get("/mensagens/:id", async (req, res) => {
-  try {
-    const lista = await lerMensagens();
-    const mensagem = lista.find(m => m.id === Number(req.params.id));
-    if (!mensagem) return res.status(404).json({ erro: "Mensagem não encontrada." });
-    res.json(mensagem);
-  } catch (erro) {
-    console.error(erro);
-    res.status(500).json({ erro: "Falha ao consultar mensagem." });
-  }
-});
 app.get("/total-mensagens", async (req, res) => {
   try { res.json({ total: (await lerMensagens()).length }); }
   catch (erro) { res.status(500).json({ erro: "Falha na contagem." }); }
@@ -95,7 +75,3 @@ app.get("/total-mensagens", async (req, res) => {
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Servidor em http://localhost:${PORT}`);
 });
-
-// — [SPRINT 06 – NOVO: interface web e arquivos estáticos] —
-// A rota GET / agora entrega public/index.html em vez da mensagem fixa.
-app.use(express.static("public"));
