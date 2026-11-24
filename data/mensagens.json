@@ -1,26 +1,26 @@
 [
   {
     "id": 1,
-    "usuario": "enzo bonifacio",
-    "texto": "eu quero um sapo de estimação",
+    "usuario": "felipe",
+    "texto": "ola",
     "data": "2026-11-19T17:49:32.065Z"
   },
   {
     "id": 2,
-    "usuario": "mkgkhjk",
-    "texto": "kjhkjkhjk",
+    "usuario": "lidia",
+    "texto": "n sei oq escrever",
     "data": "2026-11-19T18:55:37.317Z"
   },
   {
     "id": 3,
-    "usuario": "mkgkhjkjhkkh",
-    "texto": "jhkhjkjhkhjkjhkjhk",
+    "usuario": "leo",
+    "texto": "n sei",
     "data": "2026-11-19T18:55:41.410Z"
   },
   {
     "id": 4,
-    "usuario": "kk",
-    "texto": "kjhkhkh",
+    "usuario": "leo m",
+    "texto": "ola leo",
     "data": "2026-11-19T18:55:45.946Z"
   }
 ]
